@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{background:#FBF2F4;font:13px sans-serif;margin:0;padding:10px}
+h3{margin:14px 0 4px;color:#a45}
+.row{display:flex;flex-wrap:wrap;gap:6px}
+.row svg{width:150px;height:165px;background:linear-gradient(#fff,#fdeef3);border-radius:10px}
+.mini svg{width:44px;height:44px;border-radius:50%;background:#fff}
+</style></head><body>
+<div id="o"></div><script src="avatar.js"></script><script>
+// 換裝測試圖庫：?s=分區、?crop=服裝特寫、?face=臉部特寫
+const D = { back: 'long', bang: 'air', hair: AV.HAIR.深棕, eye: AV.EYES.蜜茶, skin: AV.SKIN.暖杏, outfit: 'knit', oc: AV.OC.櫻, acc: 'none', acc2: 'none' };
+const q = new URLSearchParams(location.search);
+const ov = {}; for (const k of ['back', 'bang', 'outfit', 'acc', 'acc2', 'age', 'expr']) if (q.has(k)) ov[k] = q.get(k);
+if (q.has('oc')) ov.oc = AV.OC[q.get('oc')]; if (q.has('hair')) ov.hair = AV.HAIR[q.get('hair')]; if (q.has('m')) Object.assign(ov, { m: true, back: 'short', bang: 'part' });
+const L = x => Object.assign({}, D, ov, x);
+const sec = (t, items, cls = 'row') => `<h3>${t}</h3><div class="${cls}">${items.map(x => AV.render(L(x), x.bust ? { bust: true } : {})).join('')}</div>`;
+const big = (svg, vb, w, h) => svg.replace('viewBox="0 0 200 220"', `viewBox="${vb}"`).replace('<svg', `<svg style="width:${w};height:${h};background:#fff;margin:2px"`);
+let h = '';
+if (q.has('crop')) h = q.get('crop').split(',').map(k => big(AV.render(L({ outfit: k })), q.get('vb') || '22 120 156 102', '46vw', '30.1vw')).join('');
+else if (q.has('backs')) h = q.get('backs').split(',').map(k => big(AV.render(L({ back: k })), q.get('vb') || '0 0 200 220', '30vw', '33vw')).join('');
+else if (q.has('face')) h = big(AV.render(L({})), q.get('vb') || '40 25 120 120', '96vmin', '96vmin');
+else {
+  const S = {
+    outfit: () => sec('服裝', Object.keys(AV.OUTFITS).map(k => ({ outfit: k }))),
+    back: () => sec('髮型', Object.keys(AV.BACKS).map(k => ({ back: k }))),
+    bang: () => sec('瀏海', Object.keys(AV.BANGS).map(k => ({ bang: k }))),
+    acc: () => sec('飾品', [...Object.keys(AV.ACC).map(k => ({ acc: k })), ...Object.keys(AV.ACC2).map(k => ({ acc2: k }))]),
+    age: () => sec('年齡／男性', [{ age: 'child' }, { age: 'teen' }, { age: 'adult' }, { age: 'elder' }, { m: true, back: 'short', bang: 'spiky', outfit: 'hoodie' }, { m: true, age: 'adult', back: 'short', bang: 'part', outfit: 'suit' }]),
+    npc: () => Object.keys(AV.NPC_LOOK).length && `<h3>NPC</h3><div class="row">${Object.values(AV.NPC_LOOK).map(x => AV.render(x)).join('')}</div>`,
+    mini: () => `<h3>小頭像</h3><div class="row mini">${Object.values(AV.NPC_LOOK).map(x => AV.render(x, { bust: true })).join('')}</div>`
+  };
+  const only = q.get('s');
+  for (const k in S) if (!only || only.split(',').includes(k)) h += S[k]();
+}
+document.getElementById('o').innerHTML = h;
+</script></body></html>

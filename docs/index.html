@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+</head><body>
+<title>二十一弦</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&display=swap">
+<style>
+/* 版面：左側立繪與數值、右側四季行程表與人生紀錄；粉櫻、藤紫、薄荷、金弦 */
+:root {
+  --bg: #FBF1F4; --bg2: #F5E4EB; --panel: #FFFCFD; --ink: #3B2A36; --muted: #8A7381; --line: #EED7E0;
+  --rose: #D96A8E; --rose-ink: #FFFFFF; --rose-soft: #FBE1EA; --lilac: #8F7BCF; --lilac-soft: #ECE6F8;
+  --mint: #4FA893; --mint-soft: #DCF1EB; --gold: #B58A3E; --gold-soft: #F6EBD3; --seal: #C9435F;
+  --string: #C49A4E; --bridge: #D27E98;
+  --frame-a: #FDE7EF; --frame-b: #EDE6FA;
+  --shadow: 0 1px 0 rgba(120, 60, 90, .05), 0 10px 28px -16px rgba(150, 70, 110, .35);
+  --f-disp: "Huninn", "LXGW WenKai TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --f-kai: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", serif;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --r: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1E1621; --bg2: #271C2B; --panel: #2A1F2E; --ink: #F3E8EF; --muted: #B9A2B1; --line: #433246;
+    --rose: #F09AB6; --rose-ink: #2A1420; --rose-soft: #4A2B3C; --lilac: #BCA9EE; --lilac-soft: #352C4A;
+    --mint: #86D2C1; --mint-soft: #203A35; --gold: #E2BE76; --gold-soft: #3D3222; --seal: #F27C95;
+    --string: #E2BE76; --bridge: #F09AB6; --frame-a: #3B2636; --frame-b: #2E2742;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .2), 0 10px 28px -16px rgba(0, 0, 0, .7); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1E1621; --bg2: #271C2B; --panel: #2A1F2E; --ink: #F3E8EF; --muted: #B9A2B1; --line: #433246;
+  --rose: #F09AB6; --rose-ink: #2A1420; --rose-soft: #4A2B3C; --lilac: #BCA9EE; --lilac-soft: #352C4A;
+  --mint: #86D2C1; --mint-soft: #203A35; --gold: #E2BE76; --gold-soft: #3D3222; --seal: #F27C95;
+  --string: #E2BE76; --bridge: #F09AB6; --frame-a: #3B2636; --frame-b: #2E2742;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .2), 0 10px 28px -16px rgba(0, 0, 0, .7); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.7; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, canvas:focus-visible, [tabindex]:focus-visible { outline: 2.5px solid var(--lilac); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-disp); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.3; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[hidden] { display: none !important; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 8px 16px; font-size: 14px; transition: background .15s, border-color .15s; }
+.btn:hover { border-color: var(--rose); }
+.btn.primary { background: var(--rose); border-color: var(--rose); color: var(--rose-ink); font-weight: 700; }
+.btn.primary:hover { filter: brightness(1.05); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn[aria-pressed="true"] { background: var(--lilac-soft); border-color: var(--lilac); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+svg.av { display: block; width: 100%; height: auto; }
+
+/* ---------- 開始畫面 ---------- */
+.hero { position: relative; padding-block: 28px 8px; }
+.hero canvas { display: block; width: 100%; height: 150px; touch-action: none; cursor: pointer; }
+.hero-t { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: -18px; }
+.logo { font-family: var(--f-disp); font-size: clamp(44px, 9vw, 84px); line-height: 1; letter-spacing: .06em; color: var(--rose); }
+.logo small { display: block; font-family: var(--f-kai); font-size: 15px; letter-spacing: .3em; color: var(--muted); margin-top: 10px; }
+.tag { font-family: var(--f-kai); font-size: 18px; max-width: 30em; }
+.hint { font-size: 12px; color: var(--muted); }
+.start-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 20px; min-width: 0; }
+.panel > h2 { font-size: 20px; margin-bottom: 12px; }
+.field { display: grid; gap: 6px; margin-bottom: 16px; }
+.field label, .olbl { font-size: 12px; letter-spacing: .12em; color: var(--muted); }
+input, textarea { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%; }
+.bgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+.bgc { text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: 14px; padding: 12px; display: grid; gap: 4px; }
+.bgc b { font-family: var(--f-disp); font-weight: 400; font-size: 17px; }
+.bgc span { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+.bgc[aria-pressed="true"] { border-color: var(--rose); background: var(--rose-soft); }
+.dress { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 18px; align-items: start; }
+.dress-av, .frame { background: radial-gradient(120% 90% at 50% 18%, var(--frame-a), var(--frame-b)); border-radius: 18px; overflow: hidden; position: relative; border: 1px solid var(--line); }
+.dress-av::after, .frame::after { content: ""; position: absolute; inset: 8px; border: 1px dashed color-mix(in srgb, var(--rose) 35%, transparent); border-radius: 12px; pointer-events: none; }
+.dress-opts { display: grid; gap: 10px; min-width: 0; }
+.orow { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; align-items: start; }
+.olbl { padding-top: 6px; }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 11px; font-size: 13px; line-height: 1.5; }
+.opt.on { background: var(--rose); border-color: var(--rose); color: var(--rose-ink); }
+.opt.locked { opacity: .55; border-style: dashed; }
+.opt.locked small { margin-left: 6px; font-size: 11px; color: var(--muted); }
+.opt.locked:not(:disabled):hover { opacity: 1; border-color: var(--gold); }
+.sws { gap: 8px; }
+.sw { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--panel); background: var(--c); box-shadow: 0 0 0 1px var(--line); padding: 0; }
+.sw.on { box-shadow: 0 0 0 2px var(--rose); }
+.start-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; align-items: center; }
+.lives { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.lives li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: center; }
+.lives li.muted { display: block; }
+.lives b { font-family: var(--f-disp); font-weight: 400; display: block; }
+.lives small { color: var(--muted); font-size: 12px; display: block; line-height: 1.5; }
+.mini { display: inline-block; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: linear-gradient(var(--frame-a), var(--frame-b)); border: 1px solid var(--line); flex: none; }
+.mini svg { width: 100%; height: 100%; display: block; }
+.side-stack { display: grid; gap: 16px; align-content: start; }
+.note { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* ---------- 遊戲 ---------- */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top .wrap { padding-block: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.top-who { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; flex: 1 1 auto; min-width: 0; }
+#topName { font-family: var(--f-disp); font-size: 22px; color: var(--rose); }
+#topAge { font-variant-numeric: tabular-nums; }
+#topStage { font-size: 13px; color: var(--muted); }
+.top .btn { padding: 6px 12px; font-size: 13px; }
+.band { display: block; width: 100%; height: 54px; touch-action: none; cursor: pointer; margin-top: 6px; }
+.game { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; margin-top: 10px; }
+aside { display: grid; gap: 16px; align-content: start; }
+.me .frame { aspect-ratio: 200 / 220; max-width: 100%; }
+.stat { display: grid; grid-template-columns: 36px minmax(0, 1fr) 28px; gap: 8px; align-items: center; font-size: 13px; }
+.stat-k { color: var(--muted); }
+.stat-bar { height: 8px; border-radius: 99px; background: var(--bg2); overflow: hidden; }
+.stat-bar i { display: block; height: 100%; border-radius: 99px; background: var(--rose); transition: width .5s; }
+.b-music i, i.b-music { background: var(--lilac); } .b-theory, .b-study { background: var(--lilac) !important; }
+.b-health, .b-mood { background: var(--mint) !important; } .b-fame { background: var(--gold) !important; } .b-music { background: var(--lilac) !important; } .b-passion { background: var(--seal) !important; }
+.stat-v { text-align: right; font-variant-numeric: tabular-nums; }
+#stats { display: grid; gap: 6px; margin-top: 14px; }
+#facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 14px 0 0; }
+#facts div { display: grid; }
+#facts dt { font-size: 11px; letter-spacing: .1em; color: var(--muted); }
+#facts dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 500; }
+#people { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#people li { display: grid; grid-template-columns: 40px minmax(0, 1fr) 54px; gap: 10px; align-items: center; }
+.pp b { font-weight: 500; display: block; line-height: 1.3; } .pp small { color: var(--muted); font-size: 11.5px; }
+.heart { height: 6px; border-radius: 99px; background: var(--bg2); overflow: hidden; }
+.heart i { display: block; height: 100%; background: var(--rose); }
+.panel h3 { font-size: 15px; margin-bottom: 10px; color: var(--muted); letter-spacing: .08em; }
+main { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.ctrl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ctrl .sp { margin-left: auto; display: flex; gap: 4px; }
+.ctrl .sp .btn { padding: 6px 10px; font-variant-numeric: tabular-nums; }
+#slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.slot { border: 1.5px solid var(--line); background: var(--bg); border-radius: 14px; padding: 10px; display: grid; gap: 6px; text-align: left; min-width: 0; }
+.slot.on { border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-soft); }
+.slot-s { font-family: var(--f-disp); font-size: 20px; line-height: 1; }
+.slot-s small { font-family: var(--f-body); font-size: 11px; color: var(--muted); margin-left: 6px; }
+.slot-a { font-weight: 700; font-size: 14px; border-radius: 8px; padding: 4px 8px; }
+.g-練 { background: var(--rose-soft); } .g-學 { background: var(--lilac-soft); } .g-休 { background: var(--mint-soft); } .g-工 { background: var(--gold-soft); }
+#acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 12px; }
+.act { border: 1px solid transparent; border-radius: 12px; padding: 8px 10px; text-align: left; display: grid; gap: 2px; }
+.act:hover { border-color: var(--rose); }
+.act b { font-size: 14px; } .act small { font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+.plan-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; }
+.plan-h h2 { font-size: 19px; }
+#planMsg { color: var(--seal); font-size: 13px; min-height: 1em; margin-top: 8px; }
+#talk { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 3px 12px 3px 3px; font-size: 13px; }
+.chip .mini { width: 30px; height: 30px; }
+.chip:disabled { opacity: .5; cursor: default; }
+.talk-h { display: flex; gap: 8px; align-items: baseline; margin: 16px 0 8px; }
+.talk-h h3 { margin: 0; }
+#talkNote { font-size: 12px; color: var(--muted); }
+/* 場景與事件卡 */
+.scene, .card { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 20px; align-items: center; }
+.scene-av, .card-av { background: radial-gradient(120% 90% at 50% 18%, var(--frame-a), var(--frame-b)); border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+.card-av p { padding: 8px 12px 10px; background: var(--panel); border-top: 1px solid var(--line); display: grid; line-height: 1.35; }
+.card-av b { font-family: var(--f-disp); font-weight: 400; font-size: 17px; }
+.card-av small { color: var(--muted); font-size: 12px; }
+.scene-k, .card-k { font-size: 12px; letter-spacing: .14em; color: var(--muted); }
+.scene-k b { color: var(--rose); font-weight: 700; letter-spacing: .06em; }
+.scene-say, .card-say { font-family: var(--f-kai); font-size: 18.5px; line-height: 1.85; margin: 10px 0 12px; max-width: 34em; }
+.card-say.big { font-size: 21px; }
+.card h2 { font-size: 24px; margin-top: 4px; color: var(--rose); }
+.card-ch { display: grid; gap: 8px; margin-top: 4px; }
+.card-ch.row { display: flex; }
+.choice { text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: 14px; padding: 10px 14px; display: grid; gap: 2px; transition: border-color .15s, transform .15s; }
+.choice:hover { border-color: var(--rose); transform: translateX(3px); }
+.choice b { font-weight: 500; } .choice small { color: var(--muted); font-size: 12px; }
+.card-res { font-family: var(--f-kai); font-size: 17.5px; line-height: 1.8; background: var(--rose-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 4px; }
+.card-ch .btn.primary { justify-self: start; }
+.ds { display: flex; flex-wrap: wrap; gap: 4px; }
+.d { font-size: 11.5px; border-radius: 99px; padding: 1px 8px; font-variant-numeric: tabular-nums; }
+.d.up { background: var(--mint-soft); color: var(--mint); } .d.dn { background: var(--rose-soft); color: var(--seal); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .d.up { color: #9FE0D0; } }
+#stage { animation: rise .35s ease; }
+@keyframes rise { from { transform: translateY(6px); opacity: .6; } to { transform: none; opacity: 1; } }
+/* 人生地圖與紀錄 */
+.map-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; }
+.map-h h3 { margin: 0; }
+.legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+#map { display: grid; grid-template-columns: repeat(auto-fill, minmax(14px, 1fr)); gap: 4px; }
+#map i { aspect-ratio: 1; border-radius: 4px; background: var(--bg2); position: relative; }
+#map i.m-練 { background: var(--rose); } #map i.m-學 { background: var(--lilac); } #map i.m-休 { background: var(--mint); } #map i.m-工 { background: var(--gold); }
+#map i.now { outline: 2px solid var(--ink); outline-offset: 1px; }
+#map i.aw::after { content: ""; position: absolute; inset: 30%; border-radius: 50%; background: var(--panel); }
+#log { display: grid; gap: 14px; }
+.yr h3 { font-size: 15px; color: var(--ink); margin-bottom: 6px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.yr h3 span { font-family: var(--f-body); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.yr ul { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: grid; gap: 4px; }
+.yr li { font-size: 14px; line-height: 1.65; }
+.l-act { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 2px 10px; }
+.l-act .sea { color: var(--muted); font-size: 12.5px; padding-top: 1px; }
+.l-act .ds { grid-column: 2; }
+.l-ev { font-family: var(--f-disp); color: var(--rose); margin-top: 4px; }
+.l-ev small { font-family: var(--f-body); color: var(--muted); font-size: 12px; margin-left: 8px; }
+.l-pick { color: var(--muted); font-size: 13px; }
+.l-res, .l-say { font-family: var(--f-kai); font-size: 15.5px; }
+.l-gain::before { content: "♪ "; color: var(--gold); } .l-gain { color: var(--gold); font-weight: 500; }
+.l-enc { color: var(--lilac); font-size: 13px; } .l-gift { color: var(--rose); font-size: 13px; }
+.l-n { color: var(--muted); }
+/* 結局 */
+.end-hero { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 28px; }
+.end-av { background: radial-gradient(120% 90% at 50% 18%, var(--frame-a), var(--frame-b)); border-radius: 22px; overflow: hidden; border: 1px solid var(--line); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.end-title { font-size: clamp(38px, 7vw, 64px); color: var(--rose); margin: 6px 0; }
+.end-name { font-family: var(--f-kai); font-size: 22px; margin-bottom: 8px; }
+.also { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.also span { border: 1px solid var(--line); border-radius: 99px; padding: 2px 12px; font-size: 13px; background: var(--panel); }
+.end-facts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 26px 0 0; }
+.end-facts div { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.end-facts dt { font-size: 11px; color: var(--muted); letter-spacing: .1em; }
+.end-facts dd { margin: 0; font-family: var(--f-disp); font-size: 20px; font-variant-numeric: tabular-nums; }
+.end-last { font-family: var(--f-kai); font-size: 18px; margin-top: 20px; }
+.end-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 22px; }
+.end-cols h2 { font-size: 18px; margin-bottom: 8px; }
+.tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tl li { font-size: 14px; } .tl span { display: block; font-size: 12px; color: var(--muted); }
+.end-last-word { margin-top: 26px; display: grid; gap: 8px; max-width: 560px; }
+.end-last-word label { font-size: 13px; color: var(--muted); }
+.end-last-word input { flex: 1 1 240px; width: auto; }
+/* 視窗 */
+#modal { position: fixed; inset: 0; z-index: 20; background: rgba(40, 20, 35, .45); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.sheet { background: var(--panel); border-radius: 20px; border: 1px solid var(--line); width: min(920px, 100%); max-height: 100%; overflow: auto; padding: 20px; box-shadow: var(--shadow); }
+.sheet header { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 14px; }
+.sheet header h2 { font-size: 22px; color: var(--rose); }
+.sheet header .x { margin-left: auto; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tabs button { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 14px; font-size: 14px; }
+.tabs button small { margin-left: 6px; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.tabs button[aria-selected="true"] { background: var(--rose); border-color: var(--rose); color: var(--rose-ink); }
+.tabs button[aria-selected="true"] small { color: inherit; opacity: .8; }
+.enc { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.enc article { background: var(--bg); border-radius: 14px; padding: 12px 14px; border: 1px solid var(--line); }
+.enc h3 { font-size: 17px; color: var(--ink); margin-bottom: 4px; letter-spacing: 0; }
+.enc p { font-size: 13.5px; line-height: 1.75; }
+.enc .lock { opacity: .55; border-style: dashed; }
+#toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 18px; border-radius: 99px; z-index: 30; font-size: 14px; }
+.foot { margin-top: 28px; font-size: 12px; color: var(--muted); max-width: 60em; }
+
+@media (max-width: 900px) {
+  .start-grid { grid-template-columns: minmax(0, 1fr); }
+  .game { grid-template-columns: minmax(0, 1fr); }
+  aside { grid-template-columns: minmax(0, 1fr); }
+  .me { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .me #stats { margin-top: 0; }
+  .me #facts { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .end-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .dress { grid-template-columns: minmax(0, 1fr); }
+  .dress-av { max-width: 200px; justify-self: center; width: 100%; }
+  .bgs { grid-template-columns: minmax(0, 1fr); }
+  #slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .scene, .card { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .card-av p { padding: 6px 8px; } .card-av b { font-size: 15px; }
+  .scene-say, .card-say { font-size: 16.5px; }
+  .card h2 { font-size: 20px; }
+  .end-hero { grid-template-columns: minmax(0, 1fr); }
+  .end-av { max-width: 220px; }
+  .l-act { grid-template-columns: minmax(0, 1fr); }
+  .l-act .ds { grid-column: 1; }
+  .ctrl .sp { margin-left: 0; }
+}
+@media (max-width: 420px) {
+  .card { grid-template-columns: minmax(0, 1fr); }
+  .card-av { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; }
+  .card-av p { border-top: 0; background: none; }
+  .me { grid-template-columns: 104px minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { #stage { animation: none; } .choice:hover { transform: none; } * { transition: none !important; } }
+</style>
+
+<div id="start" hidden>
+  <div class="wrap">
+    <div class="hero">
+      <canvas class="zheng" tabindex="0" aria-label="二十一根古箏弦，可以點擊或拖曳刮奏"></canvas>
+      <div class="hero-t">
+        <h1 class="logo">二十一弦<small>古箏少女養成記</small></h1>
+        <div>
+          <p class="tag">從第一次纏膠布，到最後一次上台。排好每一季的行程，陪一個人把箏彈成一輩子。</p>
+          <p class="hint">上面的二十一根弦可以點，也可以按住往下刮。</p>
+        </div>
+      </div>
+    </div>
+    <div class="start-grid">
+      <section class="panel">
+        <h2>新的一段箏途</h2>
+        <div class="field"><label for="nameIn">名字</label><input id="nameIn" maxlength="10" placeholder="例如：若箏、清弦、雨棠"></div>
+        <div class="field"><label>從哪裡開始</label></div>
+        <div class="bgs">
+          <button class="bgc" data-bg="child"><b>六歲・才藝班</b><span>路最長：音樂班、學生音樂比賽、中國音樂學系，然後是樂團、演奏家或老師。</span></button>
+          <button class="bgc" data-bg="teen"><b>十五歲・高中國樂社</b><span>起步晚，但還來得及拚大學術科考試。</span></button>
+          <button class="bgc" data-bg="adult"><b>二十八歲・成人班</b><span>下班後學箏：考級、業餘樂團、街頭藝人，或乾脆辭職教箏。</span></button>
+        </div>
+        <div class="field"><label>外觀（遊戲中可以在衣櫃換裝、買新衣服）</label></div>
+        <div class="dress">
+          <div class="dress-av" id="prevAv"></div>
+          <div class="dress-opts" id="dressStart"></div>
+        </div>
+        <div class="start-cta">
+          <button class="btn primary" id="startBtn">開始這一生</button>
+          <button class="btn" id="randLook">隨機外觀</button>
+        </div>
+      </section>
+      <div class="side-stack">
+        <section class="panel" id="resume" hidden>
+          <h2>上次的人生</h2>
+          <p class="muted" id="resumeInfo"></p>
+          <div class="start-cta"><button class="btn primary" id="resumeBtn">繼續</button></div>
+        </section>
+        <section class="panel">
+          <h2>箏譜筆記</h2>
+          <p class="note">遊戲裡遇到的技法、曲目、箏派、考試制度，都會收進這本筆記，跨每一段人生累積。目前收集 <b id="encProg"></b>。</p>
+          <div class="start-cta"><button class="btn" id="encBtn2">打開筆記</button></div>
+        </section>
+        <section class="panel">
+          <h2>前世紀錄</h2>
+          <ul class="lives" id="lives"></ul>
+        </section>
+        <section class="panel">
+          <h2>怎麼玩</h2>
+          <p class="note">每一年排春、夏、秋、冬四季的行程：上課、練琴、讀樂理、打工、教學、接演出……每個行程會改變數值，也會花錢或賺錢。考級、比賽、升學、招考會在對的季節出現，等你做決定。熱忱歸零，就會想放棄。</p>
+        </section>
+      </div>
+    </div>
+    <p class="foot">遊戲中的制度與數字參考臺灣實際的學箏路徑簡化而成，實際規定以各單位當年公告為準；人物與教室皆為虛構。</p>
+  </div>
+</div>
+
+<div id="game" hidden>
+  <div class="top">
+    <div class="wrap">
+      <div class="top-who"><span id="topName"></span><span id="topAge"></span><span id="topStage"></span></div>
+      <button class="btn" id="wardBtn">衣櫃與商店</button>
+      <button class="btn" id="encBtn">箏譜筆記</button>
+      <button class="btn" id="soundBtn" aria-pressed="false">聲音：關</button>
+      <button class="btn" id="quitBtn">回首頁</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <canvas class="zheng band" tabindex="0" aria-label="二十一根古箏弦，可以點擊或拖曳刮奏"></canvas>
+    <div class="game">
+      <aside>
+        <section class="panel me">
+          <div class="frame" id="portrait"></div>
+          <div id="stats"></div>
+          <dl id="facts"></dl>
+        </section>
+        <section class="panel">
+          <h3>身邊的人</h3>
+          <ul id="people"></ul>
+        </section>
+      </aside>
+      <main>
+        <section class="panel">
+          <div class="ctrl">
+            <button class="btn primary" id="go">開始這一年</button>
+            <button class="btn" id="auto" aria-pressed="false">自動往前</button>
+            <div class="sp" role="group" aria-label="速度"><button class="btn" data-speed="1">1×</button><button class="btn" data-speed="2">2×</button><button class="btn" data-speed="4">4×</button></div>
+          </div>
+        </section>
+        <section class="panel" id="plan">
+          <div class="plan-h"><h2>今年的行程</h2><span class="muted small">點一個季節，再從下面選要做什麼</span></div>
+          <div id="slots"></div>
+          <div id="acts"></div>
+          <p id="planMsg" role="status"></p>
+          <div class="talk-h"><h3>找人聊聊</h3><span id="talkNote"></span></div>
+          <div id="talk"></div>
+        </section>
+        <section class="panel" id="stage" hidden aria-live="polite"></section>
+        <section class="panel">
+          <div class="map-h"><h3>人生地圖</h3><span class="legend"><span><i style="background:var(--rose)"></i>練琴</span><span><i style="background:var(--lilac)"></i>學習</span><span><i style="background:var(--mint)"></i>休息</span><span><i style="background:var(--gold)"></i>工作</span></span></div>
+          <div id="map"></div>
+        </section>
+        <section id="log" aria-label="人生紀錄"></section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div id="end" hidden>
+  <div class="wrap">
+    <div id="endBody"></div>
+    <div class="start-cta"><button class="btn primary" id="againBtn">再活一次</button><button class="btn" id="encBtn3">箏譜筆記</button></div>
+  </div>
+</div>
+
+<div id="modal" hidden></div>
+<div id="toast" hidden role="status"></div>
+
+<script src="avatar.js"></script>
+<script src="data.js"></script>
+<script src="events.js"></script>
+<script src="game.js"></script>
+
+</body></html>
